@@ -3,6 +3,10 @@ from django.db import models
 class MailingList(models.Model):
     name = models.CharField(max_length=200,default='',unique=True)
     resource_uri = models.CharField(max_length=200,default='')
+    
+    def __unicode__(self):
+        return self.name
+    
     @staticmethod
     def return_from_dic(d):
         '''Creates the object from a dictionary and returns it.
@@ -18,6 +22,10 @@ class MailingList(models.Model):
 class Referral(models.Model):
     name = models.CharField(max_length=200,default='')
     resource_uri = models.CharField(max_length=200,default='')
+    
+    def __unicode__(self):
+        return self.name
+    
     @staticmethod
     def return_from_dic(d):
         '''Creates the object from a dictionary and returns it.'''
@@ -51,6 +59,9 @@ class User(models.Model):
     utm_source = models.CharField(max_length=200,default='')
     #TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
     zipcode = models.CharField(max_length=10)
+    
+    def __unicode__(self):
+        return '%s %s <%s>' % (self.first_name,self.last_name,self.email)
     
     @staticmethod
     def create_from_dic(d):
