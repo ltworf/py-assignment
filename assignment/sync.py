@@ -18,6 +18,7 @@ def sync():
     b=remote_db.request(r)
     b=json.loads(b)
     
+    #Sets are hashed, the "in" operator is O(1), it would be O(n) on a list
     uri_set = set()
 
     #Add remote users locally
@@ -29,9 +30,9 @@ def sync():
     
     #Remove remote users locally
     to_delete = []
-    for i in User.objects.iterator():
+    for i in User.objects.iterator(): #Using iterator because "all" would load the entire table in memory
         if i.resource_uri not in uri_set:
-            to_delete.append(i)
+            to_delete.append(i) #I don't know how the iterator is implemented, i delete the objects later for safety
     print "Removing %d local users who don't exist remotely" % len(to_delete)
     map(User.delete,to_delete)
             
