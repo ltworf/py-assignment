@@ -14,7 +14,7 @@ class Remote:
         
     def request(self,service,param={}):
         param['username'] = self.username
-        param['key'] = self.key
+        param['api_key'] = self.key
         param['format'] = 'json'
 
         url = '%s%s?%s' % (self.api, service, urllib.urlencode(param)) 
