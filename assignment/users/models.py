@@ -13,13 +13,13 @@ class User(models.Model):
     country = models.CharField(max_length=4,default='')
     email = models.EmailField(max_length=254,default='')
     first_name = models.CharField(max_length=200,default='')
-    gender = models.CharField(max_length=1,default='',choices=('m','f','','o'))
+    gender = models.CharField(max_length=1,default='',choices=(('m','Male'),('f','Female'),('','Unspecified'),('o','Other')))
     last_name = models.CharField(max_length=200,default='')
     lead = models.BooleanField(default=False)
     phone = models.CharField(max_length=60,default='')
     street_number = models.CharField(max_length=10,default='')
     mailing_lists = models.ManyToManyField(MailingList)
-    resource_uri = models.CharField(max_length=200,readonly=True) #remote url to the resource
+    resource_uri = models.CharField(max_length=200,editable=False,unique=True) #remote url to the resource
     tr_input_method = models.CharField(max_length=200,default='')
     tr_ip_address = models.CharField(max_length=45,null=True) #TODO expand charfield model to represent an ip address
     tr_language = models.CharField(max_length=10,default='')
