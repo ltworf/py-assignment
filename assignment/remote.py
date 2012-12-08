@@ -21,11 +21,24 @@ class Remote:
         self.protocol = protocol
         self.api = '%s://%s:%d/%s' % (protocol,host,port,api)
     def delete(self,resource_uri):
+        head = {'Authorization': ('ApiKey %s:%s' % (self.username,self.key))}
         connection = self._get_connection()
         connection.connect()
-        connection.request('DELETE',resource_uri)
+        
+        param = {}
+        param['username'] = self.username
+        param['api_key'] = self.key
+        param['format'] = 'json'
+        resource_uri = resource_uri + '?' + urllib.urlencode(param)
+        
+        connection.request('DELETE',resource_uri,headers=head)
+        print resource_uri
         r = connection.getresponse()
+        a = r.read()
         connection.close()
+        if r.status/100 in (4,5):
+            print r.status, r.reason
+            raise Exception(a)
         return r
     def _get_connection(self):
         if self.protocol=='http':
