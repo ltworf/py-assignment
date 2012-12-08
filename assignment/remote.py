@@ -21,19 +21,37 @@ class Remote:
         self.protocol = protocol
         self.api = '%s://%s:%d/%s' % (protocol,host,port,api)
     def delete(self,resource_uri):
-        if self.protocol=='http':
-            connection = httplib.HTTPConnection(self.host,self.port,False,10)
+        connection = self._get_connection()
         connection.connect()
         connection.request('DELETE',resource_uri)
         r = connection.getresponse()
         connection.close()
         return r
-    def add(self,d):
+    def _get_connection(self):
+        if self.protocol=='http':
+            return httplib.HTTPConnection(self.host,self.port,False,10)
+    def add(self,d,url='/v1/account_lead/?'):
         '''Adds a user to the remote database'''
         #post = urllib.urlencode(d)
         post = json.dumps(d)
-        print post
-        return self.request('v1/account_lead/',{},post)
+        head = {'Content-Type':'application/json'}
+        
+        param = {}
+        param['username'] = self.username
+        param['api_key'] = self.key
+        param['format'] = 'json'
+        url = url + urllib.urlencode(param)
+        
+        connection = self._get_connection()
+        connection.connect()
+        connection.request('POST',url,post,head)
+        r=connection.getresponse()
+        error = (r.status != 201)
+        a=r.read()
+        connection.close()
+        if error:
+            raise Exception(a)
+        return
         
     def request(self,service,param={},post=None):
         param['username'] = self.username
