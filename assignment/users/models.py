@@ -68,8 +68,8 @@ class User(models.Model):
     utm_source = models.CharField(max_length=200,default='',blank=True)
     #TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
     zipcode = models.CharField(max_length=10,default='',blank=True)
-    def delete(self, using=None):
-        if self.resource_uri=='':
+    def delete(self, using=None,force=False):
+        if self.resource_uri=='' and force==False:
             raise Exception('Can\'t delete unsynchronized item. Synchronize the database first!')
         super(User,self).delete(using)
     def save(self, force_insert=False, force_update=False, using=None):
