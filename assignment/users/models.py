@@ -57,18 +57,26 @@ class User(models.Model):
     lead = models.BooleanField(default=False)
     phone = models.CharField(max_length=60,default='',blank=True)
     street_number = models.CharField(max_length=10,default='',blank=True)
-    mailing_lists = models.ManyToManyField(MailingList,validators=[ml_count],default=[MailingList.objects.iterator().next()])
-    resource_uri = models.CharField(max_length=200,editable=False,unique=True) #remote url to the resource
+    mailing_lists = models.ManyToManyField(MailingList,validators=[ml_count])
+    resource_uri = models.CharField(max_length=200,editable=False,blank=True,db_index=True) #remote url to the resource
     tr_input_method = models.CharField(max_length=200,default='',blank=True)
     tr_ip_address = models.CharField(max_length=45,null=True,validators=[validate_ip])
     tr_language = models.CharField(max_length=10,default='',blank=True)
-    tr_referral = models.ForeignKey(Referral,null=True,on_delete=models.PROTECT,default=Referral.return_from_dic({'name':'Salvatore','resource_uri':''}))
+    tr_referral = models.ForeignKey(Referral,null=True,on_delete=models.PROTECT)
     utm_campaign = models.CharField(max_length=200,default='',blank=True)
     utm_medium = models.CharField(max_length=200,default='',blank=True)
     utm_source = models.CharField(max_length=200,default='',blank=True)
     #TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
     zipcode = models.CharField(max_length=10,default='',blank=True)
-    
+    def save(self, force_insert=False, force_update=False, using=None):
+        validate_ip(self.tr_ip_address)
+        try:
+            if self.tr_referral==None:
+                self.tr_referral = Referral.return_from_dic({'name':'Salvatore','resource_uri':''})
+        except:
+            pass
+           
+        super(User,self).save(force_insert,force_update,using)
     def __unicode__(self):
         return '%s %s <%s>' % (self.first_name,self.last_name,self.email)
     
@@ -81,6 +89,8 @@ class User(models.Model):
         del(d['mailing_lists'])
         
         new_user = User(**d)
+        new_user.save()
+        
         new_user.tr_referral = referral
         map(new_user.mailing_lists.add,ml)
         new_user.save()
