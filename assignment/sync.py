@@ -22,11 +22,14 @@ def sync():
     uri_set = set()
 
     #Add remote users locally
+    added=0
     for i in b['objects']:
         uri_set.add(i['resource_uri'])
         if len(User.objects.filter(resource_uri=i['resource_uri']))==0:
             #User does not exist locally
             User.create_from_dic(i)
+            added+=1
+    print 'Downloaded %d objects, added %d' % (len(b['objects']),added)
     
     #Remove remote users locally
     to_delete = []
