@@ -1,7 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 from users.models import *
+from users.forms import *
 
 def index(request):
     user_list = User.objects.all()
@@ -16,7 +17,22 @@ def detail(request, uid):
     return HttpResponse(u)
 
 def add(request):
-    return HttpResponse('suca')
+    if request.method == 'POST': # If the form has been submitted...
+        form = UserForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            u=User()
+            u.email=form.cleaned_data['email']
+            u.first_name=form.cleaned_data['first_name']
+            u.last_name=form.cleaned_data['last_name']
+            u.birth_date=form.cleaned_data['birth_date']
+            u.tr_ip_address = request.META['REMOTE_ADDR']
+            u.save()
+            u.mailing_lists.add(MailingList.objects.all()[0])
+            return HttpResponseRedirect('/users/') # Redirect after POST
+    else:
+        form = UserForm() # An unbound form
+
+    return render(request, 'users/add.html', {'form': form,})
 def ajaxdetail(request, uid):
     u = get_object_or_404(User,id=uid)
     

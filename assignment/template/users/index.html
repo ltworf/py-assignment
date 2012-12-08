@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="{{ STATIC_URL }}/css" type="text/css">
+        <script type="text/javascript" src="{{ STATIC_URL }}/jquery.js"></script>  
+        <title>User List</title>
+    </head>
+
+    <body>
+
+    <div class="header">
+        <div class="headerimg">
+            <a href="/users">LOGO</a>
+        </div>
+
+        <div class="headertitle">
+
+            <ul class="tmenu">
+                <li class=tmenu><a href="http://www.google.com/">Link</a></li>
+                <li class=tmenu><a href="http://www.google.com/">Link</a></li>
+                <li class=tmenu><a href="http://www.google.com/">Link</a></li>
+            </ul>
+
+            <BR>&nbsp;<BR>&nbsp;Title<BR>&nbsp;<BR>
+
+            <ul class=menu>
+                <li class="menu"><a href="http://www.google.com/">Link</a></li>
+                <li class="menu"><a href="http://www.google.com/">Link</a></li>
+                <li class="menu"><a href="http://www.google.com/">Link</a></li>
+            </ul>
+        </div>
+        <br>
+    </div>
+
+    <h2>List of the users</h2>
+
+    <div align="center"><br>
+
+
+    <div class="news">
+        <div class="title"></div>
+        <div class="newstext" id="content">
+            Select a user or <a href="/users/add" >Add one</a>
+        </div>
+        <div class="footnews"></div>
+
+
+    </div>
+
+    <div class="news">
+
+        <div class="title">Users</div>
+        <div class="subhead"> </div>
+        <div class="newstext">
+
+        {% if user_list %}
+        <ul>
+            {% for user in user_list %}
+                <li><a onclick="jQuery('#content').load('/users/{{user.id}}');return false;" href="#">{{user.first_name}} {{user.last_name}}</a> &lt;<a href="mailto:{{user.email}}">{{user.email}}</a>&gt;&nbsp;<a href="">Details</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No users</p>
+        {% endif %}
+        </div>
+        <div class="footnews">Search&nbsp;</div>
+
+    </div>
+
+    </div>
+    <div class="footer"> <a>Contact us</a>&nbsp;<a>Careers</a>&nbsp;<a>Legal information</a>&nbsp;</div>
+
+    </body>
+</html>
