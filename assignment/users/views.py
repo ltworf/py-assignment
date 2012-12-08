@@ -1,17 +1,27 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import etag
 
 from users.models import *
 from users.forms import *
 
+
+def latest_entry(table):
+    '''Returns the last time a table was modified (only works
+    if events are set to watch on that table'''
+    try:
+        return str(LastModified.objects.get(pk=table).timestamp)
+    except:
+        return '0'
+
+@etag(lambda x:latest_entry('User'))
 def index(request):
     user_list = User.objects.all()
     context = {'user_list': user_list}
     return render(request, 'users/index.html', context)
+
     
-    
-    
-    
+@etag(lambda x:latest_entry('User'))
 def detail(request, uid):
     u = get_object_or_404(User,id=uid)
     return HttpResponse(u)
@@ -33,6 +43,8 @@ def add(request):
         form = UserForm() # An unbound form
 
     return render(request, 'users/add.html', {'form': form,})
+
+@etag(lambda x:latest_entry('User'))
 def ajaxdetail(request, uid):
     u = get_object_or_404(User,id=uid)
     

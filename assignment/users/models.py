@@ -8,7 +8,15 @@ def ml_count(value):
 def validate_ip(value):
     #TODO validate ip address, it can be ipv4/6/4-to-6-tunnel
     pass
-        
+
+class LastModified(models.Model):
+    '''This class represents when a certain resource was last modified'''
+    name = models.CharField(max_length=20,unique=True,primary_key=True)
+    timestamp = models.DecimalField(max_digits=22,decimal_places=1)
+    
+    def __unicode__(self):
+        return '%s: %d' % (self.name,self.timestamp)
+    
 class MailingList(models.Model):
     name = models.CharField(max_length=200,default='',unique=True)
     resource_uri = models.CharField(max_length=200,default='')

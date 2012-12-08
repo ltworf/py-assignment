@@ -1,7 +1,9 @@
+from time import time
+
 from django.db.models.signals import post_save, post_delete
 from django.conf import settings
 
-from users.models import User
+from users.models import User,LastModified
 from remote import get_remote,DeleteException
 
 def post_save_user(sender, **kwargs):
@@ -27,6 +29,21 @@ def post_delete_user(sender,**kwargs):
                 raise e
             
         print "-->",user
-
+        
+def update_last_modified(sender,**kwargs):
+    print sender, 
+    if sender.__name__ not in ('User','MailingList','Referral'):
+        return
+    try:
+        d=LastModified.objects.get(pk=sender.__name__).timestamp
+    except:
+        d=LastModified()
+        d.pk = sender.__name__
+    d.timestamp = int(time())
+    d.save()        
+    
+        
 post_save.connect(post_save_user,sender=User)
 post_delete.connect(post_delete_user,sender=User)
+post_save.connect(update_last_modified)
+post_delete.connect(update_last_modified)
