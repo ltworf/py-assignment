@@ -15,11 +15,11 @@ def post_save_user(sender, **kwargs):
     
 def post_delete_user(sender,**kwargs):
     user=kwargs['instance']
-    
-    print "-->",user.resource_uri
-    remote_db=get_remote()
-    
-    remote_db.delete(user.resource_uri)
+
+    if user.resource_uri!='':
+        remote_db=get_remote()
+        remote_db.delete(user.resource_uri)
+        print "-->",user
 
 post_save.connect(post_save_user,sender=User)
 post_delete.connect(post_delete_user,sender=User)
