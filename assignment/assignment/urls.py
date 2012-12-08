@@ -8,6 +8,11 @@ admin.autodiscover()
 from django.contrib import admin
 from users.models import *
 
+from users.api import UserResource
+
+user_resource = UserResource()
+
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'assignment.views.home', name='home'),
@@ -18,4 +23,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    
+    url(r'^api/', include(user_resource.urls)),
 )
