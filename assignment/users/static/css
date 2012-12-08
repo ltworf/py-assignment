@@ -1,0 +1,212 @@
+/* -------------------------------------------------------------------------------------------- */
+/* Stile dei menu di navigazione */
+/* -------------------------------------------------------------------------------------------- */
+
+ul.menu, li.menu { display: inline; }
+ul.tmenu, li.tmenu { display: inline; }
+
+ul.tmenu {
+	font-size:7pt;
+	}
+
+
+ul.menu	{ 
+	list-style-type:none; 
+	font-size:10pt;
+	}
+
+li.menu a {
+	font-weight:bold;
+	padding-left:0.5em;
+	padding-right:0.5em;
+	border-style:none solid none solid;
+	border-width:2px;
+	width:100px;
+	text-decoration:none;
+	}
+
+table.istable {
+	width:100%;
+	color:white;
+	font-size:12px;
+	}
+
+li.menu a:visited {
+	color:#6c8c9b;
+}
+
+li.tmenu a:visited {
+	color:#6c8c9b;
+	}
+
+li.tmenu a {
+	padding-right:10px;
+	}
+
+
+
+li.tmenu a:hover {
+	color: #2b2b2b;
+}
+
+li.menu a:hover { 
+	color:#FF7926;
+	}
+
+
+
+/* -------------------------------------------------------------------------------------------- */
+/* Stile delle tabelle */
+/* -------------------------------------------------------------------------------------------- */
+table {	border-style : none none none none; border-width : 0px; }
+
+body { 
+	background-color : #EEEEEE; 
+	font-family: arial, verdana, sans-serif;
+	}
+
+table.login { 
+	border-style : solid solid solid solid;
+	border-color : gray;
+	border-width : 1px;
+	}
+
+
+div.header {
+	border-style : solid solid solid solid;	
+	border-color :#FF7926;
+	border-width:1px;
+	background-color : #FFFFFF;
+	color : black;
+	padding: 7px;
+	clear:both;
+	min-width:800px;
+	padding-right:131px;
+	text-align:center;
+	}
+
+img { border-style : none none none none; }
+
+div.headertitle {
+	padding-left: 5px;
+	vertical-align: top;
+	font-size:28px;
+	height:120px;
+	}
+div.hmenu {
+	font-size:10px;
+	} 
+div.headerimg { 
+	float:left;
+	padding:3px 3px 3px 3px;
+	background-color : #EAEAEA;
+	border-style : solid solid solid solid;
+	border-width : 1px;
+	border-color : #D0D0D0;
+
+	}
+
+div.subhead {
+	border-style : none none solid none;
+	border-color : gray;
+	border-width : 1px;
+	text-align:left;
+	font-size : 9px;
+	width:763px;
+	padding-left:25px;
+	}
+
+div.news {
+	width: 800px;
+	background-image: url('center.png');
+	background-repeat: repeat-y;
+
+	text-align:justify;
+	color:white;
+	background-color: #2B2B2B;
+	font-size : 14px;
+	}
+
+
+div.title {
+	background-color : #2b2b2b;
+	background-image:url('top.png');
+	background-repeat:no-repeat;
+	color : #9b9b9b;
+	font-size:15px;
+	text-align:center;
+	height:29px;
+}
+
+div.footnews {
+	background-color : #2b2b2b;
+	background-image:url('bottom.png');
+	background-repeat:no-repeat;
+	font-size:9px;
+	text-align:right;
+	color : #8b8b8b;
+	height:47px;
+	padding-right:40px;
+}
+
+div.newstext {
+	padding-left:25px;
+	padding-right:30px;
+	}
+
+a:link { color : #6c8c9b; }
+a:visited { color : #6c8c9b; }
+
+
+div.footer {
+	background-color: #FFFFFF;
+	border:1px solid #ff7926;
+	color: #1AA3FF;
+	text-align: center;
+	font-size : 12px;
+	min-width:800px;
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+
+
+table.listasiti { border-style : none; width : 800px; }
+
+td.listasiti { font-family:monospace; font-size:11px}
+
+td.campoform {  color:white; }
+
+td.redname { color : red; }
+
+tr.darkrow { color:white; background-color:#3b3b3b; }
+tr.lightrow {color:white; }
+
+table.top_page { border-style : solid; border-width : 1px; width:800px; }
+
+table.corpo_noborder {width:100%; border-style : none; font-family:monospace; font-size:11px}
+
+td.grey { background-color : #EEEEEE; border-style : none; }
+
+th.blue { background-color : #AAAAFF; border-style : solid; border-width : 1px; }
+
+th.orange { background-color : #FA6A00;	border-style : solid; border-width : 1px; }
+
+.contenuto { border-style : none none solid none; border-width : 1px; background-color : #FFFFFF; width : 90em; }
+
+textarea { border-style :solid; border-color : black; border-width : 1px; }
+
+input.textbox { border : 1px solid gray; }
+
+select { font-family: monospace; font-size: 10px; }
+
+.pulsante { color:#050;font-family:'trebuchet ms',helvetica,sans-serif;font-size:small;font-weight:bold; }
+
+/* -------------------------------------------------------------------------------------------- */
+/* Stile delle intestazioni e dei paragrafi*/
+/* -------------------------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6, h7{font-weight: bold;font-style: italic;text-align: center;}
+p.giustificato { text-align: justify; }
+
