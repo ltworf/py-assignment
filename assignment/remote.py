@@ -7,7 +7,10 @@ from django.conf import settings
 
 def get_remote():
     return Remote(settings.REMOTE_API_USERNAME,settings.REMOTE_API_PASSWORD,settings.REMOTE_API_BASE_URL,settings.REMOTE_API_HOSTNAME)
-
+class DeleteException(Exception):
+    def __init__(self,status):
+        self.status=status
+        
 class Remote:
     def __init__(self,username,key,api,host,protocol='http',port=80):
         '''
@@ -32,13 +35,11 @@ class Remote:
         resource_uri = resource_uri + '?' + urllib.urlencode(param)
         
         connection.request('DELETE',resource_uri,headers=head)
-        print resource_uri
         r = connection.getresponse()
         a = r.read()
         connection.close()
         if r.status/100 in (4,5):
-            print r.status, r.reason
-            raise Exception(a)
+            raise DeleteException(r.status)
         return r
     def _get_connection(self):
         if self.protocol=='http':
