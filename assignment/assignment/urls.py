@@ -25,4 +25,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     url(r'^api/', include(user_resource.urls)),
+    
+    url(r'^users/',include('users.urls',namespace='users')),
 )
