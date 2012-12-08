@@ -1,5 +1,14 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
+def ml_count(value):
+    if value.count < 1 or value.count > 5:
+        raise ValidationError('Number of mailing lists should be between 1 and 5')
+
+def validate_ip(value):
+    #TODO validate ip address, it can be ipv4/6/4-to-6-tunnel
+    pass
+        
 class MailingList(models.Model):
     name = models.CharField(max_length=200,default='',unique=True)
     resource_uri = models.CharField(max_length=200,default='')
@@ -38,34 +47,30 @@ class Referral(models.Model):
         return newr
         pass
 class User(models.Model):
-    birth_date = models.DateField(null=True)
-    city = models.CharField(max_length=200,default='')
-    country = models.CharField(max_length=4,default='')
-    email = models.EmailField(max_length=254,default='')
+    birth_date = models.DateField(null=True,blank=True)
+    city = models.CharField(max_length=200,default='',blank=True)
+    country = models.CharField(max_length=4,default='',blank=True)
+    email = models.EmailField(max_length=254)
     first_name = models.CharField(max_length=200,default='')
-    gender = models.CharField(max_length=1,default='',choices=(('m','Male'),('f','Female'),('','Unspecified'),('o','Other')))
+    gender = models.CharField(max_length=1,default='',choices=(('m','Male'),('f','Female'),('o','Other')),blank=True)
     last_name = models.CharField(max_length=200,default='')
     lead = models.BooleanField(default=False)
-    phone = models.CharField(max_length=60,default='')
-    street_number = models.CharField(max_length=10,default='')
-    mailing_lists = models.ManyToManyField(MailingList)
-    resource_uri = models.CharField(max_length=200,editable=False,unique=True,primary_key=True) #remote url to the resource
-    tr_input_method = models.CharField(max_length=200,default='')
-    tr_ip_address = models.CharField(max_length=45,null=True) #TODO expand charfield model to represent an ip address
-    tr_language = models.CharField(max_length=10,default='')
-    tr_referral = models.ForeignKey(Referral,null=True,on_delete=models.PROTECT)
-    utm_campaign = models.CharField(max_length=200,default='')
-    utm_medium = models.CharField(max_length=200,default='')
-    utm_source = models.CharField(max_length=200,default='')
+    phone = models.CharField(max_length=60,default='',blank=True)
+    street_number = models.CharField(max_length=10,default='',blank=True)
+    mailing_lists = models.ManyToManyField(MailingList,validators=[ml_count],default=[MailingList.objects.iterator().next()])
+    resource_uri = models.CharField(max_length=200,editable=False,unique=True) #remote url to the resource
+    tr_input_method = models.CharField(max_length=200,default='',blank=True)
+    tr_ip_address = models.CharField(max_length=45,null=True,validators=[validate_ip])
+    tr_language = models.CharField(max_length=10,default='',blank=True)
+    tr_referral = models.ForeignKey(Referral,null=True,on_delete=models.PROTECT,default=Referral.return_from_dic({'name':'Salvatore','resource_uri':''}))
+    utm_campaign = models.CharField(max_length=200,default='',blank=True)
+    utm_medium = models.CharField(max_length=200,default='',blank=True)
+    utm_source = models.CharField(max_length=200,default='',blank=True)
     #TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
-    zipcode = models.CharField(max_length=10)
+    zipcode = models.CharField(max_length=10,default='',blank=True)
     
     def __unicode__(self):
         return '%s %s <%s>' % (self.first_name,self.last_name,self.email)
-    def delete(self,using=None):
-        super(User, self).delete(using)
-    def save(self, force_insert=False, force_update=False, using=None):
-        super(User, self).save(force_insert,force_update,using)
     
     @staticmethod
     def create_from_dic(d):
