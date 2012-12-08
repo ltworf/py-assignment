@@ -8,11 +8,6 @@ admin.autodiscover()
 from django.contrib import admin
 from users.models import *
 
-admin.site.register(User)
-admin.site.register(MailingList)
-admin.site.register(Referral)
-
-
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'assignment.views.home', name='home'),

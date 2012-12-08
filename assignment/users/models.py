@@ -62,6 +62,10 @@ class User(models.Model):
     
     def __unicode__(self):
         return '%s %s <%s>' % (self.first_name,self.last_name,self.email)
+    def delete(self,using=None):
+        super(User, self).delete(using)
+    def save(self, force_insert=False, force_update=False, using=None):
+        super(User, self).save(force_insert,force_update,using)
     
     @staticmethod
     def create_from_dic(d):
