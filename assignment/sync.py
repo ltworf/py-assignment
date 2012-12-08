@@ -8,9 +8,9 @@ from users.models import *
 from django.conf import settings
 
 
-from remote import Remote
+from remote import get_remote
 
-remote_db = Remote(settings.REMOTE_API_USERNAME,settings.REMOTE_API_PASSWORD,settings.REMOTE_API_BASE_URL)
+remote_db = get_remote()
 
 def sync():
     r='v1/account_lead/'
