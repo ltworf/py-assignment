@@ -38,7 +38,8 @@ def add(request):
             u.birth_date=form.cleaned_data['birth_date']
             u.tr_ip_address = request.META['REMOTE_ADDR']
             u.save()
-            u.mailing_lists.add(MailingList.objects.all()[0])
+            if MailingList.objects.count() != 0:
+                u.mailing_lists.add(MailingList.objects.all()[0])
             return HttpResponseRedirect('/users/') # Redirect after POST
     else:
         form = UserForm() # An unbound form
