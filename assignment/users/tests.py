@@ -44,26 +44,29 @@ class UsersTest(TestCase):
         return self.client.post('/users/add/',d) 
     
     def test_not_add_user(self):
+        '''Uses the form with invalid data and checks if the user is added or not'''
+        message('Posting invalid users',1)
         c=User.objects.count()
         
-        d=UsersTest.get_standard_user()
-        d['email']='  '
+        for k in UsersTest.get_standard_user().keys():
+            d=UsersTest.get_standard_user()
+            d[k]=''
+            message('Nulling field %s' %k)
         
-        response=self.post_user(d)
-        self.assertEqual(response.status_code,200)
+            response=self.post_user(d)
+            self.assertEqual(response.status_code,200)
         
-        nc=User.objects.count()
-        if nc != c:
-            message(response.content,2)
-        self.assertEqual(nc,c,'User post validation failed')
+            nc=User.objects.count()
+            self.assertEqual(nc,c,response.content)
     
     def test_add_user(self):
+        '''Tries to add a new user using the add form'''
         c=User.objects.count()
         
         
         d=UsersTest.get_standard_user()
         response=self.post_user(d)
-        message('code %d'%response.status_code,1)
+        self.assertTrue(response.status_code!=200)
         
         nc=User.objects.count()
         if nc != c+1:
@@ -71,7 +74,7 @@ class UsersTest(TestCase):
         self.assertEqual(nc,c+1,'User post failed')
         
     def test_view(self):
-        '''Checks on view'''
+        '''Tests that view don't return errors'''
         u=User.objects.iterator().next()
         
         response=self.client.get('/users/')
@@ -81,6 +84,7 @@ class UsersTest(TestCase):
         response=self.client.get('/users/%d'%u.id)
         self.assertTrue(response.status_code/100 in (2,3))
     def test_error_view(self):
+        '''Tests that 404 is returned when prompting non existing users'''
         nid=self.get_non_existing_id()
         message('Not existing id %d on User' %nid)
         
