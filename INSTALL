@@ -1,0 +1,30 @@
+Tested on Debian Sid, requires:
+
+python-django
+python2.7
+python-tastypie
+
+My own settings.py which is not shipped in the git repository.
+
+I've tried to include other dependencies, hope I didn't forget anything.
+
+
+Configure your own settings.py
+These variables are needed in it:
+REMOTE_API_USERNAME
+REMOTE_API_PASSWORD
+REMOTE_API_BASE_URL
+REMOTE_API_HOSTNAME #Hostname of the remote database
+PUBLIC_API_USERNAME #Username to access remotely the REST API
+PUBLIC_API_PASSWORD #Password to access remotely the REST API
+
+You will also need to configure haystack (the soruce is included)
+
+Run
+./manage.py syncdb
+
+./sync.py #To sync with the remote database.
+
+./manage.py runserver
+
+Go to http://localhost:8000/users/
