@@ -31,11 +31,11 @@ def post_delete_user(sender,**kwargs):
         print "-->",user
         
 def update_last_modified(sender,**kwargs):
-    print sender, 
     if sender.__name__ not in ('User','MailingList','Referral'):
         return
+    print "sender in tuple"
     try:
-        d=LastModified.objects.get(pk=sender.__name__).timestamp
+        d=LastModified.objects.get(pk=sender.__name__)
     except:
         d=LastModified()
         d.pk = sender.__name__
