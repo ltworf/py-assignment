@@ -31,7 +31,7 @@ def post_delete_user(sender,**kwargs):
         print "-->",user
         
 def update_last_modified(sender,**kwargs):
-    if sender.__name__ not in ('User','MailingList','Referral'):
+    if sender.__name__ == 'LastModified':
         return
     try:
         d=LastModified.objects.get(pk=sender.__name__)
