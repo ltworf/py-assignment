@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="{{ STATIC_URL }}/css" type="text/css">
+        <script type="text/javascript" src="{{ STATIC_URL }}/jquery.js"></script>  
+        <title>User List</title>
+    </head>
+
+    <body>
+
+    <div class="header">
+        <div class="headerimg">
+            <a href="/users">LOGO</a>
+        </div>
+
+        <div class="headertitle">
+
+            <ul class="tmenu">
+                {% block tmenu %}
+                <li class=tmenu><a href="http://www.google.com/">Link</a></li>
+                <li class=tmenu><a href="http://www.google.com/">Link</a></li>
+                <li class=tmenu><a href="http://www.google.com/">Link</a></li>
+                {% endblock %}
+            </ul>
+
+            <BR>&nbsp;<BR>&nbsp;Title<BR>&nbsp;<BR>
+
+            <ul class=menu>
+                {% block menu %}
+                <li class="menu"><a href="http://www.google.com/">Link</a></li>
+                <li class="menu"><a href="http://www.google.com/">Link</a></li>
+                <li class="menu"><a href="http://www.google.com/">Link</a></li>
+                {% endblock %}
+            </ul>
+        </div>
+        <br>
+    </div>
+
+    <h2></h2>
+
+    <div align="center"><br>
+
+        {% block content %}{% endblock %}
+
+    </div>
+    <div class="footer">{% block footlinks %} <a>Contact us</a>&nbsp;<a>Careers</a>&nbsp;<a>Legal information</a>&nbsp;{% endblock %}</div>
+
+    </body>
+</html>
