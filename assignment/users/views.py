@@ -44,7 +44,7 @@ def add(request):
 
     return render(request, 'users/add.html', {'form': form,})
 
-@etag(lambda x:latest_entry('User'))
+@etag(lambda x,uid:latest_entry('User'))
 def ajaxdetail(request, uid):
     u = get_object_or_404(User,id=uid)
     
