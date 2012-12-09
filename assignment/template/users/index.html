@@ -19,7 +19,14 @@
         {% if user_list %}
         <ul>
             {% for user in user_list %}
-                <li><a onclick="jQuery('#jcontent').load('/users/{{user.id}}');return false;" href="#">{{user.first_name}} {{user.last_name}}</a> &lt;<a href="mailto:{{user.email}}">{{user.email}}</a>&gt;&nbsp;<a href="">Details</a></li>
+                <li>
+                    <a onclick="jQuery('#jcontent').load('/users/{{user.id}}');return false;" href="#">{{user.first_name}} {{user.last_name}}</a>
+                    &lt;
+                    <a href="mailto:{{user.email}}">{{user.email}}</a>
+                    &gt;
+                    &nbsp;
+                    <a href="detail/{{user.id}}">Details</a>
+                </li>
             {% endfor %}
         </ul>
         {% else %}

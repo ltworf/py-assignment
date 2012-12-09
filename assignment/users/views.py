@@ -21,10 +21,11 @@ def index(request):
     return render(request, 'users/index.html', context)
 
     
-@etag(lambda x:latest_entry('User'))
+@etag(lambda x,uid:latest_entry('User'))
 def detail(request, uid):
     u = get_object_or_404(User,id=uid)
-    return HttpResponse(u)
+    context = {'user': u}
+    return render(request, 'users/detail.html', context)
 
 def add(request):
     if request.method == 'POST': # If the form has been submitted...
@@ -54,23 +55,6 @@ def ajaxdetail(request, uid):
          str(u.birth_date),
          u.city,
          u.country,
-         
-         
-    #gender    
-    #lead = models.BooleanField(default=False)
-    #phone = models.CharField(max_length=60,default='',blank=True)
-    #street_number = models.CharField(max_length=10,default='',blank=True)
-    #mailing_lists = models.ManyToManyField(MailingList,validators=[ml_count])
-    #resource_uri = models.CharField(max_length=200,editable=False,blank=True,db_index=True) #remote url to the resource
-    #tr_input_method = models.CharField(max_length=200,default='',blank=True)
-    #tr_ip_address = models.CharField(max_length=45,null=True,validators=[validate_ip])
-    #tr_language = models.CharField(max_length=10,default='',blank=True)
-    #tr_referral = models.ForeignKey(Referral,null=True,on_delete=models.PROTECT)
-    #utm_campaign = models.CharField(max_length=200,default='',blank=True)
-    #utm_medium = models.CharField(max_length=200,default='',blank=True)
-    #utm_source = models.CharField(max_length=200,default='',blank=True)
-    ##TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
-    #zipcode = models.CharField(max_length=10,default='',blank=True)
         )
     
     s='<a href="mailto:%s">%s %s</a><br>Birthdate: %s<br>%s (%s)'%t
