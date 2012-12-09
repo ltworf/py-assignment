@@ -25,6 +25,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     url(r'^api/', include(user_resource.urls)),
+    url(r'^search/', include('haystack.urls')),
     
     url(r'^users/',include('users.urls',namespace='users')),
+    url(r'^',include('users.urls',namespace='users')),
 )

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="news">
+
+        <div class="title">User: {{user.first_name}} {{user.last_name}}</div>
+        <div class="subhead">{{user.birthdate}} <a href="mailto:{{user.email}}">{{user.email}}</a></div>
+        <div class="newstext">
+
+        {{user.country}} {{user.city}} {{user.street_number}}
+
+        <hr>
+        <h3>Mailing lists</h3>
+        {% if user.mailing_lists %}
+        <ul>
+            {% for ml in user.mailing_lists.all %}
+                <li>{{ml.name}}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No mailing lists</p>
+        {% endif %}
+        </div>
+        <div class="footnews"><a href="/search">Search</a>&nbsp;</div>
+
+    </div>
+{% endblock %}
