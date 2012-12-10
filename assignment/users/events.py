@@ -1,6 +1,6 @@
 from time import time
 
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete,m2m_changed
 from django.conf import settings
 
 import logging
@@ -9,13 +9,13 @@ logger = logging.getLogger(__name__)
 from users.models import User,LastModified
 from remote import get_remote,DeleteException
 
-
 def post_save_user(sender, **kwargs):
     user=kwargs['instance']
-    print("Save %s '%s'" % (str(user), user.resource_uri))
+    
+    logger.debug("Save %s '%s'" % (str(user), user.resource_uri))
     if user.resource_uri!='' or user.mailing_lists.count()==0:
         return
-    print('Saving remotely')
+    logger.debug('Saving remotely')
     #It goes here when the resource is just being created BUT, on the 2nd save(),
     #when the mailing_lists are being added and the user has an id on the db.
     
@@ -32,14 +32,14 @@ def post_save_user(sender, **kwargs):
 def post_delete_user(sender,**kwargs):
     user=kwargs['instance']
 
-    print("Delete %s '%s'" % (str(user), user.resource_uri))
+    logger.debug("Delete %s '%s'" % (str(user), user.resource_uri))
     if user.resource_uri not in ('','committed'):
-        print('Deleting remotely')
+        logger.debug('Deleting remotely')
         remote_db=get_remote()
         try:
             remote_db.delete(user.resource_uri)
         except DeleteException as e:
-            print('Not present remotely')
+            logger.debug('Not present remotely')
             if e.status==404:
                 pass
             else:
@@ -58,6 +58,7 @@ def update_last_modified(sender,**kwargs):
     
         
 post_save.connect(post_save_user,sender=User)
+m2m_changed.connect(post_save_user, sender=User.mailing_lists.through)
 post_delete.connect(post_delete_user,sender=User)
 post_save.connect(update_last_modified)
 post_delete.connect(update_last_modified)
