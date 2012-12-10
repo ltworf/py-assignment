@@ -38,7 +38,7 @@ class Remote:
         r = connection.getresponse()
         a = r.read()
         connection.close()
-        if r.status/100 in (4,5):
+        if r.status != 204:
             raise DeleteException(r.status)
         return r
     def _get_connection(self):
@@ -46,7 +46,7 @@ class Remote:
             return httplib.HTTPConnection(self.host,self.port,False,10)
     def add(self,d,url='/v1/account_lead/?'):
         '''Adds a user to the remote database'''
-        #post = urllib.urlencode(d)
+
         post = json.dumps(d)
         head = {'Content-Type':'application/json'}
         
