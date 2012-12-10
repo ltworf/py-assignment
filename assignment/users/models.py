@@ -60,7 +60,7 @@ class User(models.Model):
     birth_date = models.DateField(null=True,blank=True)
     city = models.CharField(max_length=200,default='',blank=True)
     country = models.CharField(max_length=4,default='',blank=True,choices=(('nl','NL'),('be','BE'),('de','DE'),('fr','FR'),('other','Other')))
-    email = models.EmailField(max_length=254, unique=True)
+    email = models.EmailField(max_length=254, unique=True,db_index=True)
     first_name = models.CharField(max_length=200,default='')
     gender = models.CharField(max_length=1,default='',choices=(('m','Male'),('f','Female')),blank=True)
     last_name = models.CharField(max_length=200,default='')
@@ -76,7 +76,6 @@ class User(models.Model):
     utm_campaign = models.CharField(max_length=200,default='',blank=True)
     utm_medium = models.CharField(max_length=200,default='',blank=True)
     utm_source = models.CharField(max_length=200,default='',blank=True)
-    #TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
     zipcode = models.CharField(max_length=10,default='',blank=True)
     def to_dict(self):
         d=model_to_dict(self)
