@@ -20,12 +20,12 @@
         <ul>
             {% for user in user_list %}
                 <li>
-                    <a onclick="jQuery('#jcontent').load('/users/{{user.id}}');return false;" href="#">{{user.first_name}} {{user.last_name}}</a>
+                    <a onclick="jQuery('#jcontent').load('{% url users:ajaxdetail user.id %}');return false;" href="#">{{user.first_name}} {{user.last_name}}</a>
                     &lt;
                     <a href="mailto:{{user.email}}">{{user.email}}</a>
                     &gt;
                     &nbsp;
-                    <a href="detail/{{user.id}}">Details</a>
+                    <a href="{{user.get_absolute_url}}">Details</a>
                 </li>
             {% endfor %}
         </ul>
