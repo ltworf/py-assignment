@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.forms.models import model_to_dict
 
 def ml_count(value):
     if value.count < 1 or value.count > 5:
@@ -58,10 +59,10 @@ class Referral(models.Model):
 class User(models.Model):
     birth_date = models.DateField(null=True,blank=True)
     city = models.CharField(max_length=200,default='',blank=True)
-    country = models.CharField(max_length=4,default='',blank=True)
-    email = models.EmailField(max_length=254)
+    country = models.CharField(max_length=4,default='',blank=True,choices=(('nl','NL'),('be','BE'),('de','DE'),('fr','FR'),('other','Other')))
+    email = models.EmailField(max_length=254, unique=True)
     first_name = models.CharField(max_length=200,default='')
-    gender = models.CharField(max_length=1,default='',choices=(('m','Male'),('f','Female'),('o','Other')),blank=True)
+    gender = models.CharField(max_length=1,default='',choices=(('m','Male'),('f','Female')),blank=True)
     last_name = models.CharField(max_length=200,default='')
     lead = models.BooleanField(default=False)
     phone = models.CharField(max_length=60,default='',blank=True)
@@ -70,17 +71,34 @@ class User(models.Model):
     resource_uri = models.CharField(max_length=200,editable=False,blank=True,db_index=True) #remote url to the resource
     tr_input_method = models.CharField(max_length=200,default='',blank=True)
     tr_ip_address = models.CharField(max_length=45,null=True,validators=[validate_ip])
-    tr_language = models.CharField(max_length=10,default='',blank=True)
+    tr_language = models.CharField(max_length=10,default='',blank=True,choices=(('nl_NL','Dutch (nl_NL)'),('nl_BE','Dutch (nl_BE)'),('de_DE','German'),('fr_FR','French'),('en_EN','English')))
     tr_referral = models.ForeignKey(Referral,null=True,on_delete=models.PROTECT)
     utm_campaign = models.CharField(max_length=200,default='',blank=True)
     utm_medium = models.CharField(max_length=200,default='',blank=True)
     utm_source = models.CharField(max_length=200,default='',blank=True)
     #TODO filtering = u'filtering': {u'email': 1, u'first_name': 1, u'last_name': 1}}
     zipcode = models.CharField(max_length=10,default='',blank=True)
+    def to_dict(self):
+        d=model_to_dict(self)
+        #When sending and receiving the remote field is called differently...
+        d['ip_address'] = d['tr_ip_address']
+        del(d['tr_ip_address'])
+    
+    
+        for i in d.keys():
+            if d[i] == '' or d[i]==None:
+                del(d[i])
+        d['tr_referral'] = 'Salvatore'
+        d['mailing_lists'] = self.mailing_lists.count()
+        
+        if 'birth_date' in d:
+            d['birth_date'] = str(d['birth_date'])
+        return d
+    
     def get_absolute_url(self):
         return reverse('users:detail', args=[self.id])
     def delete(self, using=None,force=False):
-        if self.resource_uri=='' and force==False:
+        if self.resource_uri in ('committed','') and force==False:
             raise Exception('Can\'t delete unsynchronized item. Synchronize the database first!')
         super(User,self).delete(using)
     def save(self, force_insert=False, force_update=False, using=None):
