@@ -32,9 +32,8 @@ class UsersTest(TestCase):
         u.delete(force=True)
         return r
     
-    @staticmethod
-    def get_standard_user():
-        return {'first_name':'saro','last_name':'falsaperla','email':'saro.falsaperla@sicilia.it','birth_date':'05/12/2012'}
+    def get_standard_user(self):
+        return {'first_name':'saro','last_name':'falsaperla','email':'saro.falsaperla%d@sicilia.it'%self.getSeq(),'birth_date':'05/12/2012'}
         
     def post_user(self,d):
         '''Adds an user with the form'''
@@ -45,8 +44,8 @@ class UsersTest(TestCase):
         message('Posting invalid users',1)
         c=User.objects.count()
         
-        for k in UsersTest.get_standard_user().keys():
-            d=UsersTest.get_standard_user()
+        for k in self.get_standard_user().keys():
+            d=self.get_standard_user()
             d[k]=''
             message('Nulling field %s' %k)
         
@@ -61,7 +60,7 @@ class UsersTest(TestCase):
         c=User.objects.count()
         
         
-        d=UsersTest.get_standard_user()
+        d=self.get_standard_user()
         response=self.post_user(d)
         self.assertTrue(response.status_code!=200)
         
