@@ -9,8 +9,8 @@ used to identify remote resources that are already present locally.
 Local records have resource_uri=''
 
 When creating a new User, the record is local, but the new user is also
-created remotely, this means that on the next sync, the local record will be
-deleted and will be replaced by the identical record imported from remote.
+created remotely, this means that on the next sync, the local record's
+resource_uri will be updated to the remote one, using the email as primary key.
 
 Local records can't be deleted because the delete operation can't be replicated
 on the remote database, since the resource_uri of the remote copy is unknown.

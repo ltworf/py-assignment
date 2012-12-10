@@ -73,10 +73,7 @@ class Remote:
         param['format'] = 'json'
 
         url = '%s%s?%s' % (self.api, service, urllib.urlencode(param)) 
-        print url
         f = urllib2.urlopen(url,data=post,timeout=10)
-        
-        print post
         
         #f = requests.post(url,
         #                 post,
