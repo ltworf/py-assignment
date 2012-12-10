@@ -13,15 +13,21 @@ from time import time,sleep
 from color import message
 
 class UsersTest(TestCase):
-    
+    def getSeq(self):
+        '''Returns a different int every time it is called'''
+        try:
+            self.seq+=1
+        except:
+            self.seq=0
+        return self.seq
     def setUp(self):
         #Create event since the db is empty
-        u=User(first_name='test',last_name='test')
+        u=User(first_name='test',last_name='test',email='%d@test.com' % self.getSeq())
         u.save()
         self.client=Client()
     
     def get_non_existing_id(self):
-        u=User.objects.create()
+        u=User.objects.create(email='%d@test.com' % self.getSeq())
         r=u.id
         u.delete(force=True)
         return r
@@ -93,7 +99,7 @@ class UsersTest(TestCase):
         self.assertGreaterEqual(ct,t.timestamp,'Table has timestamp in the future')
         
         #modify
-        sleep(1)
+        sleep(2)
         u=User()
         u.first_name='test1'
         u.save()
