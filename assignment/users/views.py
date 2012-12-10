@@ -40,6 +40,7 @@ def add(request):
             u.save()
             if MailingList.objects.count() != 0:
                 u.mailing_lists.add(MailingList.objects.all()[0])
+            u.save()
             return HttpResponseRedirect('/users/') # Redirect after POST
     else:
         form = UserForm() # An unbound form
